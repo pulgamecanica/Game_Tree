@@ -13,5 +13,5 @@ class Node:
 
     # Print the node to the screen, usign positionX and positionY
     def printToScreen(self, screen_surface):
+        pass
         # TODO
-
