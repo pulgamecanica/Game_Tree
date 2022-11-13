@@ -1,5 +1,5 @@
 class Node:
-    def __init__(self, data):
+    def __init__(self, data = 0):
         self.parent = None
         self.left = None
         self.right = None
@@ -15,3 +15,11 @@ class Node:
     def printToScreen(self, screen_surface):
         pass
         # TODO
+
+    def height(self):
+        i = 0
+        tmp = self
+        while (tmp.parent):
+            i += 1
+            tmp = tmp.parent
+        return (i)
