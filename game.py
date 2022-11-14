@@ -16,7 +16,7 @@ WINDOW_WIDTH = TREE_WIDTH + 100     # Width area that the Window Covers
 WINDOW_HEIGHT = TREE_HEIGHT + 100   # Height area that the Window Covers
 
 MAX_DEPTH = 5                                   # Depth of the Game Tree
-ALGO_SPEED = 100
+ALGO_SPEED = 300
 RADIUS = (TREE_WIDTH * 0.75) / (2**MAX_DEPTH)   # Radius of the node
 
 # Set the screen configuration
@@ -161,6 +161,7 @@ def draw_mini_max(node, is_max, depth = MAX_DEPTH):
                 bestPath = child
     node.data = bestValue
     node.path = bestPath
+    pygame.time.wait(ALGO_SPEED)
     if (node.data == node.left.data):
         draw_node_to_screen(node.left, RED)
     else:
