@@ -3,16 +3,19 @@ from random import seed
 from random import randint
 from node import Node
 
-MAX_DEPTH = 4 # Depth of the Game Tree
-TREE_WIDTH = 800  # Width area that the Tree Covers
-TREE_HEIGHT = 600 # Height area that the Tree Covers
-WINDOW_WIDTH = TREE_WIDTH + 100 # Width area that the Window Covers
-WINDOW_HEIGHT = TREE_HEIGHT + 100 # Height area that the Window Covers
-GRAY_BG = 192, 192, 192 # Background Color
-NODE_COLOR = 105, 105, 105 # Node Color
-SQUARE_COLOR = 79, 74, 75
-TEXT_COLOR = 230, 230, 230
-RADIUS = (TREE_WIDTH * 0.45) / (2**MAX_DEPTH) # Radius of the node
+GRAY_BG = 192, 192, 192     # Color
+NODE_COLOR = 105, 105, 105  # Color
+SQUARE_COLOR = 79, 74, 75   # Color
+TEXT_COLOR = 230, 230, 230  # Color
+
+
+TREE_WIDTH = 800                    # Width area that the Tree Covers
+TREE_HEIGHT = 300                   # Height area that the Tree Covers
+WINDOW_WIDTH = TREE_WIDTH + 100     # Width area that the Window Covers
+WINDOW_HEIGHT = TREE_HEIGHT + 100   # Height area that the Window Covers
+
+MAX_DEPTH = 4                                   # Depth of the Game Tree
+RADIUS = (TREE_WIDTH * 0.45) / (2**MAX_DEPTH)   # Radius of the node
 
 # Set the screen configuration
 screen = pygame.display.set_mode(size=(WINDOW_WIDTH, WINDOW_HEIGHT))
@@ -52,13 +55,11 @@ def draw_vector_to_screen(node1, node2, color = NODE_COLOR):
 
 def draw_node_to_screen(node, color = NODE_COLOR):
     circle = pygame.draw.circle(screen, color, (node.positionX, node.positionY), RADIUS)
-   
     font = pygame.font.Font('Sono-VariableFont.ttf', 20)
     text = font.render(str(node.data), True, (TEXT_COLOR))
     textRect = text.get_rect()
     textRect.center = (node.positionX, node.positionY)
     screen.blit(text, textRect)
-    ## Draw the number (node.data) inside the circle, in the middle
 
 def draw_tree_to_screen(node, color = NODE_COLOR):
     if node.left:
@@ -104,10 +105,10 @@ def set_up_numbers(node, array):
     if not node.left:
         node.data = array.pop()
 
-def print_list_bottom(array):
+def draw_list_bottom(array):
     array.reverse()
     font = pygame.font.Font('Sono-VariableFont.ttf', 20)
-    square_center_height = ((WINDOW_HEIGHT - TREE_HEIGHT) / 2) + TREE_HEIGHT
+    square_center_height = ((WINDOW_HEIGHT - TREE_HEIGHT) / 2) + TREE_HEIGHT + RADIUS
     list_len = len(array)
     square_len = TREE_WIDTH / list_len
     for i, elem in enumerate(array):
@@ -119,7 +120,7 @@ def print_list_bottom(array):
         textRect.center = ((square_len * (i + 1)) - (square_len / 2), square_center_height)
         screen.blit(text, textRect)
         
-def print_right_side_bar():
+def draw_right_side_bar():
     font = pygame.font.Font('Sono-VariableFont.ttf', 20)
     for i in range(0, MAX_DEPTH + 1):
         if (i % 2):
@@ -130,10 +131,6 @@ def print_right_side_bar():
         textRect.center = (((WINDOW_WIDTH - TREE_WIDTH) / 2) + TREE_WIDTH, (i * (TREE_HEIGHT / MAX_DEPTH) + RADIUS * (i == 0)))
         screen.blit(text, textRect)
 
-
-
-
-
 pygame.init()
 root = initializeGameTree()
 array = [10, 5, 7, 11, 12, 8, 9, 8, 5, 12, 11, 12, 9, 8, 7, 10]
@@ -141,26 +138,13 @@ array.reverse()
 set_up_numbers(root, array.copy())
 print_tree(root)
 
-
 while True:
-    pygame.time.wait(400) # wait
     for event in pygame.event.get():
         if event.type == pygame.QUIT: sys.exit()
     screen.fill(GRAY_BG)
     draw_tree_to_screen(root)
-    print_list_bottom(array.copy())
-    print_right_side_bar()
-    # textRect = text.get_rect()
-
-    # draw_tree_to_screen(root) 
-    # draw_node_to_screen(testNode1, random_color)
-    # draw_node_to_screen(testNode2, random_color)
-    # draw_vector_to_screen(testNode1, testNode2, random_color)
-
-    
-
-
+    draw_list_bottom(array.copy())
+    draw_right_side_bar()
     pygame.display.update()
-
-
+    # pygame.time.wait(500)
 
