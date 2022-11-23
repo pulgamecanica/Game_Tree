@@ -9,8 +9,9 @@ SQUARE_COLOR = 79, 74, 75   # Color
 TEXT_COLOR = 230, 230, 230  # Color
 BLUE = 57, 69, 78
 RED = 161, 49, 42
+GREEN = 80, 155, 50
 
-TREE_WIDTH = 1500                    # Width area that the Tree Covers
+TREE_WIDTH = 1500                   # Width area that the Tree Covers
 TREE_HEIGHT = 800                   # Height area that the Tree Covers
 WINDOW_WIDTH = TREE_WIDTH + 100     # Width area that the Window Covers
 WINDOW_HEIGHT = TREE_HEIGHT + 200   # Height area that the Window Covers
@@ -76,7 +77,6 @@ def draw_tree_to_screen(node, color = NODE_COLOR):
     if node.parent:
         draw_vector_to_screen(node.parent, node, color)
     pygame.display.update()
-
 
 def draw_alpha_beta_to_screen(node, color, alpha, beta):
     if node == None:
@@ -164,7 +164,6 @@ def draw_right_side_bar(start_max = True):
         textRect.center = (((WINDOW_WIDTH - TREE_WIDTH) / 2) + TREE_WIDTH, (i * (TREE_HEIGHT / (MAX_DEPTH - 1)) + RADIUS * (i == 0)))
         screen.blit(text, textRect)
 
-
 def draw_min_max(node, is_max, depth = MAX_DEPTH):
     draw_node_to_screen(node, BLUE)
     pygame.time.wait(ALGO_SPEED)
@@ -198,7 +197,6 @@ def draw_min_max(node, is_max, depth = MAX_DEPTH):
     draw_node_to_screen(node, BLUE)
     pygame.display.update()
 
-
 def draw_nega_max(node, is_max, depth = MAX_DEPTH):
     draw_node_to_screen(node, BLUE)
     pygame.time.wait(ALGO_SPEED)
@@ -231,35 +229,6 @@ def draw_nega_max(node, is_max, depth = MAX_DEPTH):
     draw_node_to_screen(node, BLUE)
     pygame.display.update()
 
-
-"""
-def draw_nega_max(node, is_max, depth = MAX_DEPTH):
-    draw_node_to_screen(node, BLUE)
-    pygame.time.wait(ALGO_SPEED)
-    pygame.display.update()
-    if depth == 1:
-        if not is_max:
-            node.data = -node.data
-        return
-    listChildren = [node.left, node.right]
-    bestValue = -math.inf
-    bestPath = None
-    for child in listChildren:
-        draw_nega_max(child, not is_max, depth - 1)
-        child.data = -child.data
-        if child.data and child.data > bestValue:
-            bestValue = child.data
-            bestPath = child
-    node.data = bestValue
-    node.path = bestPath
-    pygame.time.wait(ALGO_SPEED)
-    if (node.data == node.left.data):
-        draw_node_to_screen(node.left, RED, True)
-    else:
-        draw_node_to_screen(node.right, RED, True)
-    draw_node_to_screen(node, BLUE)
-    pygame.display.update()
-"""
 def print_best_path(node):
     if not node:
         return
@@ -271,7 +240,6 @@ def print_best_path(node):
         else:
             print("-> [RIGHT]")
         print_best_path(node.path)
-
 
 def draw_nega_max_alpha_beta_pruning(node, is_max, alpha, beta, depth = MAX_DEPTH):
     draw_node_to_screen(node, BLUE)
@@ -306,11 +274,8 @@ def draw_nega_max_alpha_beta_pruning(node, is_max, alpha, beta, depth = MAX_DEPT
     draw_node_to_screen(node, BLUE)
     pygame.display.update()
 
-
-
 def execute_algorithm(option, player):
     # Set the screen configuration
-    pygame.init()
 
     root = initializeGameTree()
     # array = [randint(1, 100) for _ in range(2**(MAX_DEPTH - 1))]
@@ -324,15 +289,15 @@ def execute_algorithm(option, player):
     draw_list_bottom(array.copy())
     draw_right_side_bar(player)
     pygame.display.update()
-    if option == 1:
+    if option == 0:
         draw_min_max(root, player)
-    elif option == 2:
+    elif option == 1:
         draw_nega_max(root, player)
-    elif option == 3:
+    elif option == 2:
         draw_nega_max_alpha_beta_pruning(root, player, -math.inf, math.inf)
     print_best_path(root)
 
-
+"""
 def choose_option():
     while True:
         word = input("1) Min Max Algorithm\n2) Nega Max Algorithm\n3) Alpha Beta Prouning Algorithm\nChoose an option: ")
@@ -345,7 +310,9 @@ def choose_option():
             print("Please type a valid number!")
             continue
     return option
+"""
 
+"""
 def choose_player():
     while True:
         word = input("1) Player starts with Max\n2) Player Starts with Min\nChoose an option: ")
@@ -358,10 +325,80 @@ def choose_player():
             print("Please type a valid number!")
             continue
     return player == 1
+"""
 
+def display_options_algorithms(selected = 0):
+    pygame.time.wait(100)
+    font = pygame.font.Font('OpenSans-Italic-VariableFont.ttf', int(FONT_SIZE * 2))
+    text1 = font.render("Min Max Algorithm", True, (GREEN if selected == 0 else SQUARE_COLOR))
+    text2 = font.render("Nega Max Algorithm", True, (GREEN if selected == 1 else SQUARE_COLOR))
+    text3 = font.render("Alpha Beta Prouning Algorithm", True, (GREEN if selected == 2 else SQUARE_COLOR))
+    textRect1 = text1.get_rect()
+    textRect2 = text2.get_rect()
+    textRect3 = text3.get_rect()
+    textRect1.center = (WINDOW_WIDTH / 2, (WINDOW_HEIGHT / 2) - FONT_SIZE * 3)
+    textRect2.center = (WINDOW_WIDTH / 2, (WINDOW_HEIGHT) / 2)
+    textRect3.center = (WINDOW_WIDTH / 2, (WINDOW_HEIGHT) / 2 + FONT_SIZE * 3)
+    screen.blit(text1, textRect1)
+    screen.blit(text2, textRect2)
+    screen.blit(text3, textRect3)
+
+def display_options_player(selected = 0):
+    pygame.time.wait(100)
+    font = pygame.font.Font('OpenSans-Italic-VariableFont.ttf', int(FONT_SIZE * 2))
+    text1 = font.render("MIN", True, (GREEN if selected == 0 else SQUARE_COLOR))
+    text2 = font.render("MAX", True, (GREEN if selected == 1 else SQUARE_COLOR))
+    textRect1 = text1.get_rect()
+    textRect2 = text2.get_rect()
+    textRect1.center = (FONT_SIZE * 3, WINDOW_HEIGHT - FONT_SIZE * 3)
+    textRect2.center = (WINDOW_WIDTH - FONT_SIZE * 3, WINDOW_HEIGHT - FONT_SIZE * 3)
+    screen.blit(text1, textRect1)
+    screen.blit(text2, textRect2)
+
+def draw_curtain():
+    curtain = pygame.Surface((WINDOW_WIDTH, WINDOW_HEIGHT))
+    curtain.set_colorkey((0, 0, 0))
+    curtain.set_alpha(150)
+    pygame.draw.rect(curtain, GRAY_BG, curtain.get_rect())
+    screen.blit(curtain, (0, 0))
+
+menu_algorithms = True
+menu_player = True
+selected_algorithm = 0
+selected_player = 0
+
+screen.fill(GRAY_BG)
 while True:
-    execute_algorithm(choose_option(), choose_player())
+    pygame.init()
+    pressed = None
     for event in pygame.event.get():
-        if event.type == pygame.QUIT: sys.exit()
+        if event.type == pygame.QUIT:
+            sys.exit()
+    if menu_algorithms:
+        pressed = pygame.key.get_pressed()
+        display_options_algorithms(selected_algorithm)
+        if pressed[pygame.K_RETURN]:
+            menu_algorithms = False
+        elif pressed[pygame.K_UP]:
+            selected_algorithm -= 1
+        elif pressed[pygame.K_DOWN]:
+            selected_algorithm += 1
+        selected_algorithm %= 3
+    else:
+        pressed = pygame.key.get_pressed()
+        if menu_player:
+            display_options_player(selected_player)
+            if pressed[pygame.K_RETURN]:
+                menu_player = False
+            elif pressed[pygame.K_RIGHT]:
+                selected_player += 1
+            elif pressed[pygame.K_LEFT]:
+                selected_player -= 1
+            selected_player %= 2
+        else:
+            execute_algorithm(selected_algorithm, selected_player)
+            draw_curtain()
+            menu_algorithms = True
+            menu_player = True
     pygame.display.update()
 
